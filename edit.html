@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <title>Hello, world!</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="#">Sample App</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="/index.html">Home <span class="sr-only">(current)</span></a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <div class="container">
+        <h1 id="title">Edit Page</h1>
+
+        <form>
+            <div class="form-group">
+                <label>Brand</label>
+                <input id="brand" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Model</label>
+                <input id="model" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Specification</label>
+                <input id="specs" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Price</label>
+                <input id="price" type="number" class="form-control">
+            </div>
+
+            
+        </form>
+
+        <button class="btn btn-primary" onclick="submit()">SUBMIT</button>
+
+      </div>
+
+    
+    <script>
+        document.getElementById("title").innerText = "New Record Page";
+
+        const querystring = location.search;
+        const urlParams = new URLSearchParams(querystring);
+
+        let mode = urlParams.get('mode');
+        let index = -1;
+
+        let products_data = localStorage.getItem("products");
+        let products = [];
+
+        if (products_data) {
+            products = JSON.parse(products_data);
+        }
+
+        if (mode === 'edit') {
+            index = urlParams.get('id');
+
+            let product = products[index];
+
+            document.getElementById("brand").value = product.brand;
+            document.getElementById("model").value = product.model;
+            document.getElementById("specs").value = product.specs;
+            document.getElementById("price").value = product.price;
+
+        }
+
+        function submit() {
+            const querystring = location.search;
+            const urlParams = new URLSearchParams(querystring);
+
+            let mode = urlParams.get('mode');
+            let index = -1;
+
+            let products_data = localStorage.getItem("products");
+            let products = [];
+
+            if (products_data) {
+                products = JSON.parse(products_data);
+            }
+
+            let brand = document.getElementById("brand").value;
+            let model = document.getElementById("model").value;
+            let specs = document.getElementById("specs").value;
+            let price = document.getElementById("price").value;
+
+            const payload = {
+                "brand": brand,
+                "model": model,
+                "specs": specs,
+                "price": price
+            };
+
+            if (mode === 'edit') {
+                index = urlParams.get('id');
+                products[index] = payload;
+                localStorage.setItem("products", JSON.stringify(products));
+            } else {
+                products.push(payload);
+
+                localStorage.setItem("products", JSON.stringify(products));
+            }
+
+            location.href="index.html";
+        }
+
+
+    </script>
+   
+    
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  </body>
+</html>
